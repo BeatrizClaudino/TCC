@@ -1,11 +1,25 @@
 import './App.css'
-import Teste from './paginas/createCount'
-// import './Fonts/boschttf.ttf'
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+
+import CriarConta from './paginas/createCount';
+import Login from './paginas/login';
 function App() {
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <CriarConta />,
+    },
+    {
+      path: "/login",
+      element: <Login/>
+    }
+  ]);
   return (
-    <div className="w-screen h-screen">
-    <Teste/>
-</div>
+    <>
+      <RouterProvider router={router} /></>
   )
 }
 

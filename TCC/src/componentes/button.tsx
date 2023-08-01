@@ -9,7 +9,7 @@ interface PropsButton {
 
 const Button: React.FC<PropsButton> = ({ onclick, children }) => {
     return ( 
-        <div className="flex items-center justify-center pt-14">
+        <div className="flex items-center justify-center">
             <button onClick={onclick} className="w-[80%] bg-[#503D8F] h-[5vh] rounded-md text-white font-medium">
                {children}
             </button>
