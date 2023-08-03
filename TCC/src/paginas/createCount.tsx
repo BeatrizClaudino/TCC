@@ -1,16 +1,9 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/boschSimbolo.png";
-import Input from "../componentes/Input";
+// import Input from "../componentes/Input";
 import Button from "../componentes/button";
-import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-
-interface novoUsuario {
-    nome: string
-    email: string
-    senha: string
-    confirmarSenha: string
-}
+import React, { useState } from 'react';
 
 function senhaFacil(password: string): string {
     const tamanhoMinino = 8;
@@ -25,27 +18,31 @@ function senhaFacil(password: string): string {
     if (!letraMaiuscula || !letraMinuscula || !numero || !caracteresEspeciais) {
         console.log("A senha deve conter letras maiúsculas, minúsculas, números e caracteres especiais.");
     }
-
     return password
+}
+//
+interface User {
+    nome: string,
+    email: string,
+    senha: string,
+    confirmarSenha: string,
 }
 
 export function CriarConta(){
     const navigate = useNavigate()
     
-    const [user, setUser] = useState<novoUsuario>({
+    const [user, setUser] = useState<User>({
         nome: '',
         email: '',
         senha: '',
         confirmarSenha: ''
     })
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        setUser({ ...user, [name]: value })
-        // user[name] = value
+    const handleChange = (event : React.ChangeEvent<HTMLInputElement>)=>{
+        //ESSE NAME SE REFERE AO NAME QUE TÁ DENTRO DO INPUT E NÃO A PROPRIDADE DEFINIDA DO OBJETO
+        const {name, value} = event.target;
+        setUser({ ...user, [name]: value})
     }
-
-    
 
     return (
         <div className="w-full h-full">
@@ -60,10 +57,10 @@ export function CriarConta(){
                 <div className="w-[80%]">
                     <label className="font-bold">Create your account</label>
                     <form className="flex flex-col">
-                        <Input onChange={handleChange} nameInput="Full name" placeholder="Enter your full name" type="text" />
-                        <Input onChange={handleChange} nameInput="E-mail" placeholder="Enter your e-mail" type="text" />
-                        <Input onChange={handleChange} nameInput="Password" placeholder="Enter your password" type="text" />
-                        <Input onChange={handleChange} nameInput="Confirm password" placeholder="Confirm your password" type="text" />
+                        <label className="text-[16px]">Nome</label>
+                        <input className="border bg-[#f2f2f2f2] border-[#e0e0e0] h-10 rounded-md p-3" type="text" />
+                        <label className="text-[16px]">Nome</label>
+                        <input className="border bg-[#f2f2f2f2] border-[#e0e0e0] h-10 rounded-md p-3" type="text" />
                     </form>
                 </div>
                 <div className="w-[80%] border-b-[1px] border-[#E5E5E5] pt-12">
@@ -76,7 +73,7 @@ export function CriarConta(){
                     </Link>
                 </div>
             </div>
-            <Button onclick={() => { alert("aaa") }}>Sing in</Button>
+            <Button onclick={() => {  }}>Sing in</Button>
         </div>
     )
 

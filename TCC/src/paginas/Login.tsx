@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/boschSimbolo.png";
-import Input from "../componentes/Input";
+
 import Button from "../componentes/button";
 import  { useState } from "react";
 import { useNavigate } from 'react-router-dom';
@@ -82,10 +82,9 @@ const CriarConta : React.FC = () => {
                 <div className="w-[80%]"> 
                     <label className="font-bold">Create your account</label>
                     <form className="flex flex-col">
-                        <Input onChange={e => setNome(e.target.value)} nameInput="Full name" placeholder="Enter your full name" type="text"/>
-                        <Input onChange={e => setEmail(e.target.value)} nameInput="E-mail" placeholder="Enter your e-mail" type="text"/>
-                        <Input onChange={e => setSenha(e.target.value)} nameInput="Password" placeholder="Enter your password" type="text"/>
-                        <Input onChange={e => setConfirmarsenha(e.target.value)} nameInput="Confirm password" placeholder="Confirm your password" type="text"/>
+                        {/* <Input name="acao" acaoBotao={e => setNome(e.target.value)} labelInput="Full name" placeholder="Enter your full name" type="text"/>
+                        <Input name="" acaoBotao={e => setEmail(e.target.value)} labelInput="E-mail" placeholder="Enter your e-mail" type="text"/> */}
+                      
                     </form>
                 </div>
                 <div className="w-[80%] border-b-[1px] border-[#E5E5E5] pt-12">

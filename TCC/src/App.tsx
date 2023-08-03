@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 
 import CriarConta from './paginas/createCount';
-import Login from './paginas/login';
+import Login from './paginas/Login';
 function App() {
   const router = createBrowserRouter([
     {
