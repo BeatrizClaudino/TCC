@@ -1,24 +1,17 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/boschSimbolo.png";
-
+import {User} from "../interface/interfaceUsuario";
 import Button from "../componentes/button";
 import  { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import Input from "../componentes/Input";
 
-interface cadastro{
-    nome: string 
-    email: string
-    senha: string
-    confirmarSenha: string
-}
-
-const CriarConta : React.FC = () => {
+const Login : React.FC = () => {
     const navigate = useNavigate()
-    // const [cadastrar, setCadastrar] = useState({ nome: '', email: '',})
-    const [nome, setNome] = useState("")
-    const [email, setEmail] = useState("")
-    const [senha, setSenha] = useState("")
-    const [Confirmarsenha, setConfirmarsenha] = useState("")
+    const [login, setLogin] = useState({ 
+        email: '', 
+        senha: '',
+    })
     
     //Função que verifica se a senha é fácil com base nas regras de negócio
     function senhaFacil(password:string): string{
@@ -38,36 +31,26 @@ const CriarConta : React.FC = () => {
     return password
     }
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        //ESSE NAME SE REFERE AO NAME QUE TÁ DENTRO DO INPUT E NÃO A PROPRIDADE DEFINIDA DO OBJETO
+        const { name, value } = event.target;
+        setLogin({ ...login, [name]: value })
+        console.log(login)
+    }
+
     //Função que verifica se os campos estão vazios
     function VerificarCampos(){
         //Verificar se todos os campos estão preenchidos
-        if (nome == "" && senha == "" && email == "" && Confirmarsenha == ""){
+        if (login.email == "" && login.senha == ""){
             alert("Preencha todos os campos obrigatórios")
-        //Verificar o campo nome tá preenchido e se tá completo
-        }if (nome != ""){
-            if (!nome.includes(" ")){
-                alert("Digite o nome completo")
-            }
-        }else{
-            alert("Campo nome vazio")
         }
-         //Verificar o campo e-mail tá preenchido e se tá com o final bosch
-        if (email){
-            if(!email.includes("@br.bosch.com")){
-                alert("E-mail fora dos padrões Bosch")
-            }
-        //Verificar o campo senha tá preenchido e se tá compativel
-        }if (senha === "" || Confirmarsenha === ""){
-            alert("Preencha os campos de senha")
+        else if (login.email == "" && !(login.senha=="")){
+            alert("Preencha o campo email")
         }
-        else if(senha != Confirmarsenha){
-            alert("senhas incompativeis")
+        else if(login.senha == "" && !(login.email=="")){
+            alert("Preencha o campo senha")
         }
-        else if (senha == Confirmarsenha) {
-            console.log("Chegou aqui")
-            senhaFacil(senha)
-        }
-        //se der tudo certo bate na API enviando os valores verificados e autenticados
+        
     }
     return(
         <div className="w-full h-full">
@@ -82,8 +65,8 @@ const CriarConta : React.FC = () => {
                 <div className="w-[80%]"> 
                     <label className="font-bold">Create your account</label>
                     <form className="flex flex-col">
-                        {/* <Input name="acao" acaoBotao={e => setNome(e.target.value)} labelInput="Full name" placeholder="Enter your full name" type="text"/>
-                        <Input name="" acaoBotao={e => setEmail(e.target.value)} labelInput="E-mail" placeholder="Enter your e-mail" type="text"/> */}
+                    <Input maxDigitos={255} labelInput="email" type="email" placeholder="Digite o seu e-mail" nome="email" mudancainput={handleChange}/>
+                    <Input maxDigitos={9} labelInput="senha" type="password" placeholder="Digite a sua senha" nome="senha" mudancainput={handleChange}/>
                       
                     </form>
                 </div>
@@ -91,9 +74,9 @@ const CriarConta : React.FC = () => {
                     
                 </div>
                 <div className="pt-6 pb-8 flex flex-row">
-                    <label>Have an account? </label>
-                    <Link to={'/login'}>
-                        <label className="text-[#503D8F]"> login</label>
+                    <label>É novo por aqui? </label>
+                    <Link to={'/'}>
+                        <label className="text-[#503D8F]"> crie sua conta </label>
                     </Link>
                 </div>
             </div>
@@ -103,17 +86,4 @@ const CriarConta : React.FC = () => {
 
 
 }
-export default CriarConta;
-
-
-// type SumProps={
-//     sum:number
-// }
-
-// //tipando as variaveis e o retorno da função
-// export const sum = (a: number, b: number): SumProps =>{
-//     //retornando um objeto 
-//     return{
-//         sum: a+b
-//     }
-// }
+export default Login;

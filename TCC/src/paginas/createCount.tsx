@@ -1,36 +1,15 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/boschSimbolo.png";
-// import Input from "../componentes/Input";
+import { User } from "../interface/interfaceUsuario";
 import Button from "../componentes/button";
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import Input from "../componentes/Input";
+import axios from "axios";
 
-function senhaFacil(password: string): string {
-    const tamanhoMinino = 8;
-    const letraMaiuscula = /[A-Z]/.test(password);
-    const letraMinuscula = /[a-z]/.test(password);
-    const numero = /\d/.test(password);
-    const caracteresEspeciais = /[!@#$%&*-^]/
-
-    if (password.length < tamanhoMinino) {
-        alert("A senha deve ter pelo menos 8 caracteres.");
-    }
-    if (!letraMaiuscula || !letraMinuscula || !numero || !caracteresEspeciais) {
-        console.log("A senha deve conter letras maiúsculas, minúsculas, números e caracteres especiais.");
-    }
-    return password
-}
-//
-interface User {
-    nome: string,
-    email: string,
-    senha: string,
-    confirmarSenha: string,
-}
-
-export function CriarConta(){
+export function CriarConta() {
     const navigate = useNavigate()
-    
+
     const [user, setUser] = useState<User>({
         nome: '',
         email: '',
@@ -38,10 +17,75 @@ export function CriarConta(){
         confirmarSenha: ''
     })
 
-    const handleChange = (event : React.ChangeEvent<HTMLInputElement>)=>{
+    function senhaFacil(password: string): string {
+        const tamanhoMinino = 8;
+        const letraMaiuscula = /[A-Z]/.test(password);
+        const letraMinuscula = /[a-z]/.test(password);
+        const numero = /\d/.test(password);
+        const caracteresEspeciais = /[!@#$%&*-^]/
+    
+        if (password.length < tamanhoMinino) {
+            alert("A senha deve ter pelo menos 8 caracteres.");
+        }
+        if (!letraMaiuscula || !letraMinuscula || !numero || !caracteresEspeciais) {
+            console.log("A senha deve conter letras maiúsculas, minúsculas, números e caracteres especiais.");
+        }
+        else{
+            cadastrarBanco()
+        }
+        return password
+    }
+
+    function VerificarCampos() {
+        //Verificar se todos os campos estão preenchidos
+        if (user.nome == "" && user.senha == "" && user.email == "" && user.confirmarSenha == "") {
+            alert("Preencha todos os campos obrigatórios")
+            //Verificar o campo nome tá preenchido e se tá completo
+        } if (user.nome != "") {
+            if (!user.nome.includes(" ")) {
+                alert("Digite o nome completo")
+            }
+        } else {
+            alert("Campo nome vazio")
+        }
+        //Verificar o campo e-mail tá preenchido e se tá com o final bosch
+        if (user.email) {
+            if (!user.email.includes("@br.bosch.com")) {
+                alert("E-mail fora dos padrões Bosch")
+            }
+            //Verificar o campo senha tá preenchido e se tá compativel
+        } if (user.senha === "" || user.confirmarSenha === "") {
+            alert("Preencha os campos de senha")
+        }
+        else if (user.senha != user.confirmarSenha) {
+            alert("senhas incompativeis")
+        }
+        else if (user.senha == user.confirmarSenha) {
+            console.log("Chegou aqui")
+            senhaFacil(user.senha)
+        }
+    }
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         //ESSE NAME SE REFERE AO NAME QUE TÁ DENTRO DO INPUT E NÃO A PROPRIDADE DEFINIDA DO OBJETO
-        const {name, value} = event.target;
-        setUser({ ...user, [name]: value})
+        const { name, value } = event.target;
+        setUser({ ...user, [name]: value })
+        console.log(user)
+    }
+
+    async function cadastrarBanco(){
+        await axios.post("http://127.0.0.1:8000/cadastro/",{
+            nome: user.nome,
+            senha: user.senha,
+            email: user.email
+        }).then(res =>{
+            if(res.status == 201){
+                alert("Deu certo")
+            }
+            else{
+                alert("ops, parece qeu estamos fodidos")
+            }
+        })
     }
 
     return (
@@ -57,10 +101,10 @@ export function CriarConta(){
                 <div className="w-[80%]">
                     <label className="font-bold">Create your account</label>
                     <form className="flex flex-col">
-                        <label className="text-[16px]">Nome</label>
-                        <input className="border bg-[#f2f2f2f2] border-[#e0e0e0] h-10 rounded-md p-3" type="text" />
-                        <label className="text-[16px]">Nome</label>
-                        <input className="border bg-[#f2f2f2f2] border-[#e0e0e0] h-10 rounded-md p-3" type="text" />
+                        <Input maxDigitos={255} labelInput="Nome" type="text" placeholder="Digite o seu nome completo" nome="nome" mudancainput={handleChange} />
+                        <Input maxDigitos={255} mudancainput={handleChange} type="email" placeholder="Digite o seu e-mail" labelInput="email" nome="email"></Input>
+                        <Input maxDigitos={9} mudancainput={handleChange} type="password" placeholder="Digite sua senha" labelInput="senha" nome="senha"></Input>
+                        <Input maxDigitos={9} mudancainput={handleChange} type="password" placeholder="Confirme a sua senha" labelInput="confirmarSenha" nome="confirmarSenha"></Input>
                     </form>
                 </div>
                 <div className="w-[80%] border-b-[1px] border-[#E5E5E5] pt-12">
@@ -73,7 +117,7 @@ export function CriarConta(){
                     </Link>
                 </div>
             </div>
-            <Button onclick={() => {  }}>Sing in</Button>
+            <Button onclick={() => { VerificarCampos() }}>Sing in</Button>
         </div>
     )
 
