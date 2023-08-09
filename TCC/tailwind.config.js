@@ -6,11 +6,12 @@ export default {
   ],
   theme: {
     extend: {
-      // fontFamily:{
-      //   bosch:["BoschSans"],
-      // }
+      spacing: {
+        'space-between': 'space-between',
+      }
     },
   },
+  variants: {},
   plugins: [],
 
 }
