@@ -6,6 +6,17 @@ export const api = axios.create({
     baseURL: 'http://127.0.0.1:8000/'
 })
 
-export function cadastrar(user:User) {
-    return api.post('/cadastrar', user);
+export async function cadastrar(user:User) {
+    api.post('/cadastro/', {
+        senha: user.senha,
+        nome: user.nome,
+        email: user.email
+    }).then(resp => console.log(user)
+    );
+}
+
+export async function login(){
+    api.post('/login/',{
+        
+    })
 }

@@ -9,7 +9,7 @@ import Login from './paginas/Login';
 function App() {
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/cadastro",
       element: <CriarConta />,
     },
     {

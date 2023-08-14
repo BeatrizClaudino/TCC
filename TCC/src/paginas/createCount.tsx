@@ -24,14 +24,11 @@ export function CriarConta() {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
-
     const [user, setUser] = useState<User>({
         nome: '',
         email: '',
         senha: '',
-        confirmarSenha: ''
     })
-
     function senhaFacil(password: string): string {
         const tamanhoMinino = 8;
         const letraMaiuscula = /[A-Z]/.test(password);
@@ -50,7 +47,7 @@ export function CriarConta() {
 
     function VerificarCampos() {
         //Verificar se todos os campos estão preenchidos
-        if (user.nome == "" && user.senha == "" && user.email == "" && user.confirmarSenha == "") {
+        if (user.nome == "" && user.senha == "" && user.email == "") {
             alert("Preencha todos os campos obrigatórios")
             //Verificar o campo nome tá preenchido e se tá completo
         } if (user.nome != "") {
@@ -66,88 +63,84 @@ export function CriarConta() {
                 alert("E-mail fora dos padrões Bosch")
             }
             //Verificar o campo senha tá preenchido e se tá compativel
-        } if (user.senha === "" || user.confirmarSenha === "") {
-            alert("Preencha os campos de senha")
+        } if (user.senha === "") {
+            alert("Preencha o campos de senha")
+        }else{
+            senhaFacil
         }
-        else if (user.senha != user.confirmarSenha) {
-            alert("senhas incompativeis")
-        }
-        else if (user.senha == user.confirmarSenha) {
-            console.log("Chegou aqui")
-            senhaFacil(user.senha)
-        }
+       
     }
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         //ESSE NAME SE REFERE AO NAME QUE TÁ DENTRO DO INPUT E NÃO A PROPRIDADE DEFINIDA DO OBJETO
         const { name, value } = event.target;
         setUser({ ...user, [name]: value })
         console.log(user)
-
     }
     const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         console.log("aaaaa")
         try {
             const response = await cadastrar(user);
-            console.log(response)
+            console.log(response + "response do criar usuario")
             // Lógica após o cadastro bem-sucedido
         } catch (error) {
             // Lógica para lidar com erros
         }
     };
+    console.log("renderizando")
     return (
         <div className="w-full h-full">
-            <img className="w-full h-1" src={Logo} alt="" />
+            <img className="w-full h-2" src={Logo} alt="" />
             <header className="w-full h-[8vh] border-[#F1F1F1] border-b-2 flex items-center">
                 <img className="w-[125px]" src={logo} alt="" />
             </header>
-            <div className="w-full flex items-center justify-center pt-12">
-                {/* O texto precisa ser transparente para o gradiente pegar */}
-                <label className=" text-transparent text-[40px] bg-clip-text bg-gradient-to-r from-[#004290] from-10% via-[#4D3E8F] via-30% to-[#CE44D1]">Corporate wiki</label>
-            </div>
-            <div className="w-full flex items-center flex-col pt-20 justify-center">
-                <div className="w-[80%] flex items-center justify-center flex-col">
-                    <label className="font-bold">Crie sua conta</label>
-                    <Box
-                        onSubmit={handleFormSubmit}
-                        component="form"
-                        sx={{
-                            '& .MuiTextField-root': { m: 1, width: "100%" },
-                        }}
-                        noValidate
-                        autoComplete="off"
-
-                    >
-                        <TextField required id="outlined-required" label="Nome" onChange={handleChange} name="nome" />
-                        <TextField required id="outlined-required" label="E-mail" onChange={handleChange} name="email" />
-                        <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
-                            <InputLabel htmlFor="outlined-adornment-password">Senha *</InputLabel>
-                            <OutlinedInput id="outlined-adornment-password" type={showPassword ? 'text' : 'password'}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label="Password" />
-                        </FormControl>
-                        <Button onclick={() => { VerificarCampos() }}>Sing in</Button>
-                    </Box>
+            <div className="w-full pt-20">
+                <div className="w-full flex items-center justify-center">
+                    {/* O texto precisa ser transparente para o gradiente pegar */}
+                    <label className=" text-transparent text-[40px] bg-clip-text bg-gradient-to-r from-[#004290] from-10% via-[#4D3E8F] via-30% to-[#CE44D1]">Corporate wiki</label>
                 </div>
-                <div className="w-[80%] border-b-[1px] border-[#E5E5E5] pt-6">
+                <div className="w-full flex items-center flex-col pt-16 justify-center">
+                    <div className="w-[80%] flex flex-col">
+                        <label className="font-bold pb-6">Crie sua conta</label>
+                        <Box
+                            onSubmit={handleFormSubmit}
+                            component="form"
+                            sx={{
+                                '& .MuiTextField-root': { mb: 4, width: "100%" },
+                            }}
+                            noValidate
+                            autoComplete="off">
+                            <TextField required id="outlined-required" label="Nome" onChange={handleChange} name="nome" />
+                            <TextField required id="outlined-required" label="E-mail" onChange={handleChange} name="email" />
+                            <FormControl sx={{ mb: 4, width: '100%' }} variant="outlined">
+                                <InputLabel htmlFor="outlined-adornment-password">Senha *</InputLabel>
+                                <OutlinedInput id="outlined-adornment-password" type={showPassword ? 'text' : 'password'}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    label="Password" onChange={handleChange} name="senha" />
+                            </FormControl>
+                            <Button onclick={() => { VerificarCampos() }}>Sing in</Button>
+                        </Box>
+                    </div>
+                    <div className="w-[80%] border-b-[1px] border-[#E5E5E5] pt-6">
 
-                </div>
-                <div className="pt-4 pb-8 flex flex-row">
-                    <label>Já possuí conta? </label>
-                    <Link to={'/login'}>
-                        <label className="text-[#503D8F]">login</label>
-                    </Link>
+                    </div>
+                    <div className="pt-4 pb-8 flex flex-row">
+                        <label>Já possuí conta? </label>
+                        <Link to={'/login'}>
+                            <span className="text-[#503D8F]">login</span>
+                        </Link>
+                    </div>
                 </div>
             </div>
             <Rodape />
