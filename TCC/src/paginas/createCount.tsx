@@ -1,16 +1,30 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/boschSimbolo.png";
-import { User } from "../interface/interfaceUsuario";
+import { cadastrar } from "../servicos/api";
 import Button from "../componentes/button";
-import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import Input from "../componentes/Input";
-import axios from "axios";
+import IconButton from '@mui/material/IconButton';
+import { User } from "../interface/interfaceUsuario"
+import Box from '@mui/material/Box';
 import Rodape from "../componentes/rodape";
-import ButtonToggle from "../componentes/buttonToggle";
+import TextField from '@mui/material/TextField';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import FormControl from '@mui/material/FormControl';
+import Logo from "../assets/faixaBosch.png"
 
 export function CriarConta() {
-    const navigate = useNavigate()
+    const [showPassword, setShowPassword] = React.useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
+
     const [user, setUser] = useState<User>({
         nome: '',
         email: '',
@@ -24,15 +38,12 @@ export function CriarConta() {
         const letraMinuscula = /[a-z]/.test(password);
         const numero = /\d/.test(password);
         const caracteresEspeciais = /[!@#$%&*-^]/
-    
+
         if (password.length < tamanhoMinino) {
             alert("A senha deve ter pelo menos 8 caracteres.");
         }
         if (!letraMaiuscula || !letraMinuscula || !numero || !caracteresEspeciais) {
             console.log("A senha deve conter letras maiúsculas, minúsculas, números e caracteres especiais.");
-        }
-        else{
-            cadastrarBanco()
         }
         return password
     }
@@ -66,51 +77,72 @@ export function CriarConta() {
             senhaFacil(user.senha)
         }
     }
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         //ESSE NAME SE REFERE AO NAME QUE TÁ DENTRO DO INPUT E NÃO A PROPRIDADE DEFINIDA DO OBJETO
         const { name, value } = event.target;
         setUser({ ...user, [name]: value })
         console.log(user)
-    }
 
-    async function cadastrarBanco(){
-        await axios.post("http://127.0.0.1:8000/cadastro/",{
-            nome: user.nome,
-            senha: user.senha,
-            email: user.email
-        }).then(res =>{
-            if(res.status == 201){
-                alert("Deu certo")
-            }
-            else{
-                alert("ops, parece qeu estamos fodidos")
-            }
-        })
     }
+    const handleFormSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log("aaaaa")
+        try {
+            const response = await cadastrar(user);
+            console.log(response)
+            // Lógica após o cadastro bem-sucedido
+        } catch (error) {
+            // Lógica para lidar com erros
+        }
+    };
     return (
         <div className="w-full h-full">
-            <header className=" w-full h-[10vh]">
-                <img className="w-[125px] h-[7vh]" src={logo} alt="" />
+            <img className="w-full h-1" src={Logo} alt="" />
+            <header className="w-full h-[8vh] border-[#F1F1F1] border-b-2 flex items-center">
+                <img className="w-[125px]" src={logo} alt="" />
             </header>
-            <div className="w-full flex items-center justify-center pt-4">
+            <div className="w-full flex items-center justify-center pt-12">
                 {/* O texto precisa ser transparente para o gradiente pegar */}
                 <label className=" text-transparent text-[40px] bg-clip-text bg-gradient-to-r from-[#004290] from-10% via-[#4D3E8F] via-30% to-[#CE44D1]">Corporate wiki</label>
             </div>
-            <div className="w-full flex items-center flex-col pt-14">
-                <div className="w-[80%]">
+            <div className="w-full flex items-center flex-col pt-20 justify-center">
+                <div className="w-[80%] flex items-center justify-center flex-col">
                     <label className="font-bold">Crie sua conta</label>
-                    <form className="flex flex-col">
-                        <Input maxDigitos={255} labelInput="Nome" type="text" placeholder="Digite o seu nome completo" nome="nome" mudancainput={handleChange} />
-                        <Input maxDigitos={255} mudancainput={handleChange} type="email" placeholder="Digite o seu e-mail" labelInput="email" nome="email"></Input>
-                        <Input maxDigitos={9} mudancainput={handleChange} type="password" placeholder="Digite sua senha" labelInput="senha" nome="senha"></Input>
-                        <Input maxDigitos={9} mudancainput={handleChange} type="password" placeholder="Confirme a sua senha" labelInput="Confirmar senha" nome="confirmarSenha"></Input>
-                    </form>
+                    <Box
+                        onSubmit={handleFormSubmit}
+                        component="form"
+                        sx={{
+                            '& .MuiTextField-root': { m: 1, width: "100%" },
+                        }}
+                        noValidate
+                        autoComplete="off"
+
+                    >
+                        <TextField required id="outlined-required" label="Nome" onChange={handleChange} name="nome" />
+                        <TextField required id="outlined-required" label="E-mail" onChange={handleChange} name="email" />
+                        <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
+                            <InputLabel htmlFor="outlined-adornment-password">Senha *</InputLabel>
+                            <OutlinedInput id="outlined-adornment-password" type={showPassword ? 'text' : 'password'}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                label="Password" />
+                        </FormControl>
+                        <Button onclick={() => { VerificarCampos() }}>Sing in</Button>
+                    </Box>
                 </div>
                 <div className="w-[80%] border-b-[1px] border-[#E5E5E5] pt-6">
 
                 </div>
-            <Button onclick={() => { VerificarCampos()}}>Sing in</Button>
                 <div className="pt-4 pb-8 flex flex-row">
                     <label>Já possuí conta? </label>
                     <Link to={'/login'}>
@@ -118,7 +150,7 @@ export function CriarConta() {
                     </Link>
                 </div>
             </div>
-            <Rodape/>
+            <Rodape />
         </div>
     )
 
