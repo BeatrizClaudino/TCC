@@ -1,14 +1,11 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/boschSimbolo.png";
-import { User } from "../interface/interfaceUsuario";
-import imgFooter from "../assets/Vectors.png"
 import Button from "../componentes/button";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import Logo from "../assets/faixaBosch.png"
 import Rodape from "../componentes/rodape";
 import ButtonToggle from "../componentes/buttonToggle";
-import { Box, TextField, ToggleButton } from "@mui/material";
+import { Box, TextField } from "@mui/material";
+import Header from "../componentes/topo";
 
 const Login: React.FC = () => {
     const navigate = useNavigate()
@@ -56,19 +53,16 @@ const Login: React.FC = () => {
         }
     }
     return (
-        <div className="w-full h-[90vh]">
-            <img className="w-full h-2" src={Logo} alt="" />
-            <header className="w-full h-[8vh] border-[#F1F1F1] border-b-2 flex items-center">
-                <img className="w-[125px]" src={logo} alt="" />
-            </header>
-            <div className="w-full h-full flex flex-col items-center justify-center">
+        <div className="w-full h-full">
+            <Header/>
+            <div className="w-full mt-8 flex flex-col items-center justify-center">
                 <div className="w-full flex items-center justify-center">
                     {/* O texto precisa ser transparente para o gradiente pegar */}
                     <label className=" text-transparent text-[40px] bg-clip-text bg-gradient-to-r from-[#004290] from-10% via-[#4D3E8F] via-30% to-[#CE44D1]">Corporate wiki</label>
                 </div>
                 <div className="w-full flex items-center flex-col pt-16 justify-center">
-                    <div className="w-[80%] flex flex-col">
-                        <label className="font-bold pb-6">Crie sua conta</label>
+                    <div className="w-[80%] flex flex-col ">
+                        <label className="font-bold pb-6">Bem-vindo de volta</label>
                         <Box
                             // onSubmit={}
                             component="form"
@@ -86,10 +80,10 @@ const Login: React.FC = () => {
                     <div className="w-[80%] border-b-[1px] border-[#E5E5E5] pt-6">
 
                     </div>
-                    <div className="pt-4 pb-8 flex flex-row">
-                        <label>Já possuí conta? </label>
+                    <div className="pt-4 pb-8 flex flex-row space-x-">
+                        <label>É novo por aqui? </label>
                         <Link to={'/cadastro'}>
-                            <label className="text-[#503D8F]">login</label>
+                            <label className="text-[#503D8F]">crie sua conta</label>
                         </Link>
                     </div>
                 </div>

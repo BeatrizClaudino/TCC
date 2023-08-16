@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { User } from '../interface/interfaceUsuario'
+import { User } from '../interface/interfaces'
 
 //Criando a const que guarda a base da URL
 export const api = axios.create({

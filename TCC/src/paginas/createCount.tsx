@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/boschSimbolo.png";
 import { cadastrar } from "../servicos/api";
 import Button from "../componentes/button";
 import React, { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
-import { User } from "../interface/interfaceUsuario"
+import { User } from "../interface/interfaces"
 import Box from '@mui/material/Box';
 import Rodape from "../componentes/rodape";
 import TextField from '@mui/material/TextField';
@@ -14,9 +13,10 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import FormControl from '@mui/material/FormControl';
-import Logo from "../assets/faixaBosch.png"
+import Header from "../componentes/topo";
 
-export function CriarConta() {
+
+const CriarConta = () => {
     const [showPassword, setShowPassword] = React.useState(false);
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -83,23 +83,20 @@ export function CriarConta() {
             const response = await cadastrar(user);
             console.log(response + "response do criar usuario")
             // Lógica após o cadastro bem-sucedido
-        } catch (error) {
+        } catch (error) {''
             // Lógica para lidar com erros
         }
     };
     console.log("renderizando")
     return (
         <div className="w-full h-full">
-            <img className="w-full h-2" src={Logo} alt="" />
-            <header className="w-full h-[8vh] border-[#F1F1F1] border-b-2 flex items-center">
-                <img className="w-[125px]" src={logo} alt="" />
-            </header>
-            <div className="w-full pt-20">
+            <Header/>
+            <div className="w-full mt-8">
                 <div className="w-full flex items-center justify-center">
                     {/* O texto precisa ser transparente para o gradiente pegar */}
                     <label className=" text-transparent text-[40px] bg-clip-text bg-gradient-to-r from-[#004290] from-10% via-[#4D3E8F] via-30% to-[#CE44D1]">Corporate wiki</label>
                 </div>
-                <div className="w-full flex items-center flex-col pt-16 justify-center">
+                <div className="w-full flex items-center flex-col mt-12 justify-center">
                     <div className="w-[80%] flex flex-col">
                         <label className="font-bold pb-6">Crie sua conta</label>
                         <Box
@@ -132,10 +129,10 @@ export function CriarConta() {
                             <Button onclick={() => { VerificarCampos() }}>Sing in</Button>
                         </Box>
                     </div>
-                    <div className="w-[80%] border-b-[1px] border-[#E5E5E5] pt-6">
+                    <div className="w-[80%] border-b-[1px] border-[#E5E5E5] mt-6">
 
                     </div>
-                    <div className="pt-4 pb-8 flex flex-row">
+                    <div className="mt-4 pb-8 flex flex-row space-x-1">
                         <label>Já possuí conta? </label>
                         <Link to={'/login'}>
                             <span className="text-[#503D8F]">login</span>
